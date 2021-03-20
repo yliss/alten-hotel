@@ -1,0 +1,19 @@
+spring:
+  profiles:
+    active: dev
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: test
+    driverClassName: org.postgresql.Driver
+server:
+  port: 8081
+  servlet:
+    contextPath: /altenhotel/api/v1
+
