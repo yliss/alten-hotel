@@ -7,7 +7,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class BookingServiceImpl implements BookingService {
     @Override
-    public Booking getBooking(Long id) {
+    public Booking retrieveBooking(Long id) {
         return null;
+    }
+
+    @Override
+    public int createBooking(Booking booking) {
+        return 0;
+    }
+
+    @Override
+    public int updateBooking(Booking booking) {
+        return 0;
+    }
+
+    @Override
+    public int deleteBooking(Booking booking) {
+        return 0;
     }
 }

@@ -1,9 +1,9 @@
-version: '3'
-services:
-  db1:
-    image: postgres:latest
-    container_name: db1
-    environment:
-      - POSTGRES_PASSWORD=test
-    ports:
-      - "5432:5432"
+FROM java:8
+
+WORKDIR /
+
+ADD ./target/alten-hotel-service.jar /alten-hotel-service.jar
+
+EXPOSE 8088
+
+CMD java -Dserver.port=8081 -Dspring.datasource.url=$DB1_URL -jar alten-hotel-service.jar

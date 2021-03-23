@@ -3,11 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.alten.services.booking</groupId>
-  <artifactId>hotel-booking</artifactId>
+  <artifactId>alten-hotel-service</artifactId>
   <packaging>jar</packaging>
   <version>0.0.1</version>
 
-  <name>hotel-booking</name>
+  <name>alten-hotel-service</name>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -60,7 +61,6 @@
       <version>${commons.lang3.version}</version>
     </dependency>
 
-
     <!-- Depedencies for unit testing and integration testing -->
     <dependency>
       <groupId>pl.pojo</groupId>
@@ -88,18 +88,16 @@
       <version>${mockito.version}</version>
     </dependency>
 
-
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
+      <version>${junit.version}</version>
     </dependency>
 
   </dependencies>
 
   <build>
-    <finalName>hotel-booking-service</finalName>
+    <finalName>alten-hotel-service</finalName>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>

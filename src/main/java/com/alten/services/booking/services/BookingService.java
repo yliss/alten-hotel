@@ -3,5 +3,8 @@ package com.alten.services.booking.services;
 import com.alten.services.booking.models.Booking;
 
 public interface BookingService {
-    Booking getBooking(Long id);
+    Booking retrieveBooking(Long id);
+    int createBooking(Booking booking);
+    int updateBooking(Booking booking);
+    int deleteBooking(Booking booking);
 }

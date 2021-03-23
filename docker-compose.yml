@@ -1,9 +1,22 @@
-FROM java:8
+version: '3'
+services:
+  db1:
+    image: postgres:latest
+    container_name: db1
+    environment:
+      - POSTGRES_PASSWORD=test
+    ports:
+      - "5432"
 
-WORKDIR /
-
-ADD ./target/mutant-finder-service.jar /mutant-finder-service.jar
-
-EXPOSE 8088
-
-CMD java -Dserver.port=8081 -Dspring.datasource.url=$DB1_URL -jar mutant-finder-service.jar
+  alten-hotel-service:
+    build: .
+    container_name: alten-hotel-service
+    ports:
+      - "8081:8081"
+    environment:
+      - DB1_URL=jdbc:postgresql://db1:5432/postgres
+    links:
+      - db1
+    depends_on:
+      - db1
+    restart: unless-stopped

@@ -5,6 +5,7 @@ import com.alten.services.booking.models.Message;
 import com.alten.services.booking.models.RetrieveBookingResponse;
 import com.alten.services.booking.models.Status;
 import com.alten.services.booking.services.BookingService;
+import com.alten.services.booking.util.validations.CheckDateConstraint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 import static com.alten.services.booking.util.StringMessages.*;
+
 @Controller
 @RequestMapping(path = "/booking")
 @Validated
@@ -26,33 +30,45 @@ public class BookingController {
 
     @GetMapping
     @RequestMapping(path = "/{id}")
-    public ResponseEntity <RetrieveBookingResponse> getBooking(@PathVariable("id") Long id){
-        final Booking booking = bookingService.getBooking(id);
+    public ResponseEntity<RetrieveBookingResponse> retrieveBooking(@PathVariable("id") Long id) {
+        final Booking booking = bookingService.retrieveBooking(id);
 
         RetrieveBookingResponse bookingResponse = new RetrieveBookingResponse();
         HttpStatus reponseStatus = null;
 
-        if (booking != null){
+        if (booking != null) {
             reponseStatus = HttpStatus.OK;
-            Status  status = new Status();
+            Status status = new Status();
             status.setMessage("The booking was ");
-        }
-        else {
-            reponseStatus = HttpStatus.NO_CONTENT;
+            bookingResponse.setStatus(status);
+            bookingResponse.setBooking(booking);
+        } else {
+            Status status = new Status();
+            status.setMessage("The booking was ");
+            bookingResponse.setStatus(status);
+            reponseStatus = HttpStatus.NOT_FOUND;
         }
 
         return ResponseEntity.status(reponseStatus).body(bookingResponse);
     }
 
     @PostMapping
-    public ResponseEntity <Message> getBooking(@RequestBody Booking booking){
+    public ResponseEntity<Message> creatingBooking(@RequestBody @Valid @CheckDateConstraint Booking booking) {
         Message message = new Message();
         HttpStatus status;
-        status = HttpStatus.OK;
-        message.setDescription(BOOKING_INFO_ISREQUIRED);
 
+        int theRecordWasCreated = bookingService.updateBooking(booking);
+        if (theRecordWasCreated > 0) {
+            message.setDescription("The booking was created successful");
 
-     return ResponseEntity.status(status).body(null);
+            status = HttpStatus.OK;
+        } else {
+            message.setDescription("The booking was not created");
+
+            status = HttpStatus.NO_CONTENT;
+        }
+
+        return ResponseEntity.status(status).body(message);
     }
 }
 
