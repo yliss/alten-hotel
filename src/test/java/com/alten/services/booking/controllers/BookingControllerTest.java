@@ -3,6 +3,7 @@ package com.alten.services.booking.controllers;
 import com.alten.services.booking.exceptions.handlers.RestExceptionHandler;
 import com.alten.services.booking.models.Booking;
 import com.alten.services.booking.services.BookingService;
+import com.alten.services.booking.util.validations.CheckDateValidator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,7 +43,7 @@ public class BookingControllerTest  {
     public void setUp(){
         bookingService = mock(BookingService.class);
         mvcMock = MockMvcBuilders.standaloneSetup(new BookingController(bookingService))
-                .setControllerAdvice(new RestExceptionHandler())
+                .setControllerAdvice(new RestExceptionHandler(), new CheckDateValidator())
                 .build();
     }
 
@@ -96,8 +97,6 @@ public class BookingControllerTest  {
         reset(bookingService);
     }
 
-    //whenCreatingABookingAndTheCheckOutDateIsNullShouldReturn400
-    //whenCreatingABookingAndTheGuestIdIsNullShouldReturn400
     //whenCreatingABookingAndTheDateIsGreaterThan3DaysShouldReturn400
     //whenCreatingABookingAndTheDateIsAfter30DaysInAdvanceShouldReturn400
     //whenCreatingABookingAndTheDataIsValidShouldReturn200
@@ -108,6 +107,42 @@ public class BookingControllerTest  {
         final Booking booking = new Booking();
 
         booking.setCheckIn(null);
+        given(bookingService.retrieveBooking(anyLong())).willReturn(booking);
+
+        mvcMock.perform(post("/booking/")
+                .content(mapper.writeValueAsString(booking))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        reset(bookingService);
+    }
+
+    @Test
+    public void whenCreatingABookingAndTheCheckOutDateIsNullShouldReturn400()
+            throws Exception {
+        final ObjectMapper mapper = new ObjectMapper();
+        final Booking booking = new Booking();
+
+        booking.setCheckOut(null);
+        given(bookingService.retrieveBooking(anyLong())).willReturn(booking);
+
+        final String request = mapper.writeValueAsString(booking);
+
+        mvcMock.perform(post("/booking/")
+                .content(request)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        reset(bookingService);
+    }
+
+    @Test
+    public void whenCreatingABookingAndTheGuestIdIsNullShouldReturn400()
+            throws Exception {
+        final ObjectMapper mapper = new ObjectMapper();
+        final Booking booking = new Booking();
+
+        booking.setGuest(null);
         given(bookingService.retrieveBooking(anyLong())).willReturn(booking);
 
         mvcMock.perform(post("/booking/")

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
+
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value
@@ -19,6 +21,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             InvalidDataException ex, WebRequest request) {
         Status status = new Status();
         status.setMessage(ex.getDescription());
+        return handleExceptionInternal(ex, status, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(value
+            = {ConstraintViolationException.class})
+    protected ResponseEntity<Object> handleConstraintViolationException(
+            ConstraintViolationException ex, WebRequest request) {
+        Status status = new Status();
+        status.setMessage(ex.getMessage());
         return handleExceptionInternal(ex, status, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 

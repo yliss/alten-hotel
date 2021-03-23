@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.Date;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,11 +15,14 @@ import javax.persistence.Entity;
 @Table(name = "Booking")
 public class BookingEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bookingIdGenerator")
+    @SequenceGenerator(name = "bookingIdGenerator", sequenceName = "bookingId",
+            allocationSize = 1,initialValue=1)
     Long id;
     @Column
-    GuestEntity guest;
-    Date checkIn;
-    Date checkOut;
+    String guestId;
     @Column
-    StatusEntity status;
+    Date checkIn;
+    @Column
+    Date checkOut;
 }

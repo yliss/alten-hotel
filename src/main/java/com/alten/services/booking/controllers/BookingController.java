@@ -5,7 +5,7 @@ import com.alten.services.booking.models.Message;
 import com.alten.services.booking.models.RetrieveBookingResponse;
 import com.alten.services.booking.models.Status;
 import com.alten.services.booking.services.BookingService;
-import com.alten.services.booking.util.validations.CheckDateConstraint;
+import com.alten.services.booking.util.validations.CheckDates;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import static com.alten.services.booking.util.StringMessages.*;
+import static com.alten.services.booking.util.StringMessages.CHECKIN_AND_CHECKOUT_DATES_ARE_REQUIRED;
 
 @Controller
 @RequestMapping(path = "/booking")
@@ -53,7 +53,10 @@ public class BookingController {
     }
 
     @PostMapping
-    public ResponseEntity<Message> creatingBooking(@RequestBody @Valid @CheckDateConstraint Booking booking) {
+    public ResponseEntity<Message> creatingBooking(@RequestBody
+                                                   @Valid
+                                                   @CheckDates(message = CHECKIN_AND_CHECKOUT_DATES_ARE_REQUIRED)
+                                                               Booking booking) {
         Message message = new Message();
         HttpStatus status;
 

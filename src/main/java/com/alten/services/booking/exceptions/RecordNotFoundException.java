@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class InvalidDataException extends RuntimeException {
+public class RecordNotFoundException extends RuntimeException {
     private final String description;
 }

@@ -2,6 +2,8 @@ package com.alten.services.booking.services.impl;
 
 import com.alten.services.booking.data.entities.BookingEntity;
 import com.alten.services.booking.data.repositories.BookingRepository;
+import com.alten.services.booking.exceptions.InvalidDataException;
+import com.alten.services.booking.exceptions.RecordNotFoundException;
 import com.alten.services.booking.mappers.BookingMapper;
 import com.alten.services.booking.models.Booking;
 import com.alten.services.booking.services.BookingService;
@@ -10,6 +12,10 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
+
+import static com.alten.services.booking.util.StringMessages.*;
+
 @Service
 public class BookingServiceImpl implements BookingService {
     private static final Logger LOGGER = LoggerFactory.getLogger(BookingServiceImpl.class);
@@ -17,31 +23,70 @@ public class BookingServiceImpl implements BookingService {
     private final BookingMapper bookingMapper;
 
     @Autowired
-    public BookingServiceImpl (BookingRepository bookingRepository, BookingMapper bookingMapper){
+    public BookingServiceImpl(BookingRepository bookingRepository, BookingMapper bookingMapper) {
         this.bookingRepository = bookingRepository;
-        this.bookingMapper= bookingMapper;
+        this.bookingMapper = bookingMapper;
 
     }
+
     @Override
     public Booking retrieveBooking(Long id) {
-        return null;
+        if (id == null || id <= 0) {
+            throw new InvalidDataException(BOOKING_ID_IS_REQUIRED);
+        }
+
+        Optional<BookingEntity> bookingEntityOptional = bookingRepository.findById(id);
+        if (bookingEntityOptional.isPresent()) {
+            throw new RecordNotFoundException(BOOKING_DOES_NOT_EXIST);
+        } else {
+            return bookingMapper.entityToModel(bookingEntityOptional.get());
+        }
     }
 
     @Override
     public int createBooking(Booking booking) {
-        BookingEntity bookingEntity= bookingMapper.modelToEntity(booking);
-        bookingRepository.save(bookingEntity);
+        if (booking == null || booking.getGuest() == null) {
+            throw new InvalidDataException(BOOKING_INFO_IS_REQUIRED);
+        }
 
-        return 1;
+        final BookingEntity bookingEntity = bookingMapper.modelToEntity(booking);
+        final BookingEntity objectSavedAtDB = bookingRepository.save(bookingEntity);
+
+        if (objectSavedAtDB == null || objectSavedAtDB.getId() == null) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 
     @Override
     public int updateBooking(Booking booking) {
-        return 0;
+        if (booking == null || booking.getGuest() == null) {
+            throw new InvalidDataException(BOOKING_INFO_IS_REQUIRED);
+        }
+
+        Optional<BookingEntity> bookingEntityOptional = bookingRepository.findById(booking.getId());
+        if (bookingEntityOptional.isPresent()) {
+            throw new RecordNotFoundException(BOOKING_DOES_NOT_EXIST);
+        } else {
+
+
+            return 0;
+        }
     }
 
     @Override
-    public int deleteBooking(Booking booking) {
-        return 0;
+    public int deleteBooking(Long id) {
+        if (id == null || id <= 0) {
+            throw new InvalidDataException(BOOKING_ID_IS_REQUIRED);
+        }
+
+        Optional<BookingEntity> bookingEntityOptional = bookingRepository.findById(id);
+        if (bookingEntityOptional.isPresent()) {
+            throw new RecordNotFoundException(BOOKING_DOES_NOT_EXIST);
+        } else {
+            bookingRepository.delete(bookingEntityOptional.get());
+            return 1;
+        }
     }
 }
