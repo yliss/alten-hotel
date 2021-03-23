@@ -1,10 +1,11 @@
-package com.alten.services.booking.models;
+package com.alten.services.booking.data.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.Date;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,10 +14,15 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @Setter
 @Getter
-public class Booking {
+@Entity
+@Table(name = "Booking")
+public class BookingEntity {
+    @Id
     Long id;
-    Guest guest;
+    @Column
+    GuestEntity guest;
     Date checkIn;
     Date checkOut;
-    Status status;
+    @Column
+    StatusEntity status;
 }
