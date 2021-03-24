@@ -12,7 +12,11 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static com.alten.services.booking.util.StringMessages.*;
 
@@ -30,13 +34,23 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public List<Booking> retrieveBooking() {
+        Iterable<BookingEntity> bookingEntities = bookingRepository.findAll();
+
+        return StreamSupport
+                .stream(bookingEntities.spliterator(), false)
+                .map(entity -> bookingMapper.entityToModel(entity))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public Booking retrieveBooking(Long id) {
         if (id == null || id <= 0) {
             throw new InvalidDataException(BOOKING_ID_IS_REQUIRED);
         }
 
         Optional<BookingEntity> bookingEntityOptional = bookingRepository.findById(id);
-        if (bookingEntityOptional.isPresent()) {
+        if (!bookingEntityOptional.isPresent()) {
             throw new RecordNotFoundException(BOOKING_DOES_NOT_EXIST);
         } else {
             return bookingMapper.entityToModel(bookingEntityOptional.get());

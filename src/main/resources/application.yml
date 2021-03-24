@@ -2,13 +2,13 @@ spring:
   profiles:
     active: dev
   jpa:
-    database: POSTGRESQL
+    database: postgresql
     show-sql: true
     hibernate:
       ddl-auto: update
   datasource:
     platform: postgres
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://127.0.0.1:5432/postgres
     username: postgres
     password: test
     driverClassName: org.postgresql.Driver

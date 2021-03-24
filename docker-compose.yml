@@ -1,12 +1,12 @@
 version: '3'
 services:
-  db1:
+  db2:
     image: postgres:latest
-    container_name: db1
+    container_name: db2
     environment:
       - POSTGRES_PASSWORD=test
     ports:
-      - "5432"
+      - "5432:5432"
 
   alten-hotel-service:
     build: .
@@ -14,9 +14,9 @@ services:
     ports:
       - "8081:8081"
     environment:
-      - DB1_URL=jdbc:postgresql://db1:5432/postgres
+      - DB1_URL=jdbc:postgresql://db2:5432/postgres
     links:
-      - db1
+      - db2
     depends_on:
-      - db1
+      - db2
     restart: unless-stopped

@@ -5,11 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
 public class RetrieveBookingResponse {
     private Status status;
-    private Booking booking;
+    private List<Booking> bookingList;
 }

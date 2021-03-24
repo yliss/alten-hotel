@@ -99,7 +99,6 @@ public class BookingControllerTest  {
 
     //whenCreatingABookingAndTheDateIsGreaterThan3DaysShouldReturn400
     //whenCreatingABookingAndTheDateIsAfter30DaysInAdvanceShouldReturn400
-    //whenCreatingABookingAndTheDataIsValidShouldReturn200
     @Test
     public void whenCreatingABookingAndTheCheckInDateIsNullShouldReturn400()
             throws Exception {
@@ -147,6 +146,26 @@ public class BookingControllerTest  {
 
         mvcMock.perform(post("/booking/")
                 .content(mapper.writeValueAsString(booking))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        reset(bookingService);
+    }
+
+    @Test
+    public void whenCreatingABookingAndTheDataIsValidShouldReturn200()
+            throws Exception {
+        final ObjectMapper mapper = new ObjectMapper();
+        final Booking booking = new Booking();
+
+        booking.setCheckIn(new Date());
+        booking.setCheckOut(new Date());
+        given(bookingService.retrieveBooking(anyLong())).willReturn(booking);
+
+        final String request = mapper.writeValueAsString(booking);
+
+        mvcMock.perform(post("/booking/")
+                .content(request)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 
