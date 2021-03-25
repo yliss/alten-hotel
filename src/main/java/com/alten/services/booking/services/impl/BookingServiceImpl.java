@@ -75,7 +75,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public int updateBooking(Booking booking) {
-        if (booking == null || booking.getGuest() == null) {
+        if (booking == null ||booking.getId() == null ||booking.getGuest() == null) {
             throw new InvalidDataException(BOOKING_INFO_IS_REQUIRED);
         }
 
@@ -83,8 +83,6 @@ public class BookingServiceImpl implements BookingService {
         if (bookingEntityOptional.isPresent()) {
             throw new RecordNotFoundException(BOOKING_DOES_NOT_EXIST);
         } else {
-
-
             return 0;
         }
     }

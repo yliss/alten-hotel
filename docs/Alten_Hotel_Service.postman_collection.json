@@ -1,0 +1,114 @@
+{
+	"id": "05d5e016-85ed-9405-c826-a999e2d3982b",
+	"name": "Alten_Hotel_Service",
+	"description": "",
+	"order": [
+		"27f3a8a7-3f88-7389-ae5b-5d801f16f967",
+		"2fa02488-9cab-8368-0cf2-38e43cb777ef",
+		"76fd8ed9-38c4-71d1-0d15-93dfa6a65149",
+		"70018edb-914d-1c9a-5888-8ad85f34e190"
+	],
+	"folders": [],
+	"folders_order": [],
+	"timestamp": 0,
+	"owner": 0,
+	"public": false,
+	"requests": [
+		{
+			"id": "27f3a8a7-3f88-7389-ae5b-5d801f16f967",
+			"headers": "",
+			"headerData": [],
+			"url": "http://localhost:8081/altenhotel/api/v1/booking/1",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": [],
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1616635416918,
+			"name": "getBooking",
+			"description": "",
+			"collectionId": "05d5e016-85ed-9405-c826-a999e2d3982b",
+			"responses": []
+		},
+		{
+			"id": "2fa02488-9cab-8368-0cf2-38e43cb777ef",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:8081/altenhotel/api/v1/booking/1",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "PUT",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1616636793718,
+			"name": "updateBooking",
+			"description": "",
+			"collectionId": "05d5e016-85ed-9405-c826-a999e2d3982b",
+			"responses": [],
+			"rawModeData": "{\r\n    \"guest\":{\r\n        \"email\":\"iiingmurcia@gmail.com\"\r\n    },\r\n    \"checkIn\":\"2021-03-25T01:09:55.860+00:00\",\r\n    \"checkOut\":\"2021-03-25T01:09:55.860+00:00\"\r\n}"
+		},
+		{
+			"id": "70018edb-914d-1c9a-5888-8ad85f34e190",
+			"name": "deleteBooking",
+			"description": "",
+			"collectionId": "05d5e016-85ed-9405-c826-a999e2d3982b",
+			"method": "DELETE",
+			"headers": "",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\r\n    \"guest\":{\r\n        \"email\":\"sermendiarias@gmail.com\"\r\n    },\r\n    \"checkIn\":\"\",\r\n    \"checkOut\":\"\"\r\n}",
+			"url": "http://localhost:8081/altenhotel/api/v1/booking/1",
+			"responses": [],
+			"pathVariableData": [],
+			"queryParams": [],
+			"headerData": [],
+			"collection_id": "05d5e016-85ed-9405-c826-a999e2d3982b"
+		},
+		{
+			"id": "76fd8ed9-38c4-71d1-0d15-93dfa6a65149",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:8081/altenhotel/api/v1/booking",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1616635387307,
+			"name": "createBooking",
+			"description": "",
+			"collectionId": "05d5e016-85ed-9405-c826-a999e2d3982b",
+			"responses": [],
+			"rawModeData": "{\r\n    \"guest\":{\r\n        \"email\":\"ingmurcia@gmail.com\"\r\n    },\r\n    \"checkIn\":\"2021-03-25T01:09:55.860+00:00\",\r\n    \"checkOut\":\"2021-03-25T01:09:55.860+00:00\"\r\n}"
+		}
+	]
+}
