@@ -8,6 +8,6 @@ public interface BookingService {
     List<Booking> retrieveBooking();
     Booking retrieveBooking(Long id);
     int createBooking(Booking booking);
-    int updateBooking(Booking booking);
+    int updateBooking(Booking booking,Long id);
     int deleteBooking(Long id);
 }

@@ -111,7 +111,7 @@ public class BookingController {
         Message message = new Message();
         HttpStatus status;
 
-        int theRecordWasCreated = bookingService.updateBooking(booking);
+        int theRecordWasCreated = bookingService.updateBooking(booking,id);
         if (theRecordWasCreated > 0) {
             message.setDescription("The booking was created successful");
 

@@ -1,6 +1,7 @@
 package com.alten.services.booking.services.impl;
 
 import com.alten.services.booking.data.entities.BookingEntity;
+import com.alten.services.booking.data.entities.StatusEntity;
 import com.alten.services.booking.data.repositories.BookingRepository;
 import com.alten.services.booking.exceptions.InvalidDataException;
 import com.alten.services.booking.exceptions.RecordNotFoundException;
@@ -63,7 +64,11 @@ public class BookingServiceImpl implements BookingService {
             throw new InvalidDataException(BOOKING_INFO_IS_REQUIRED);
         }
 
-        final BookingEntity bookingEntity = bookingMapper.modelToEntity(booking);
+         BookingEntity bookingEntity = bookingMapper.modelToEntity(booking);
+        StatusEntity status = new StatusEntity();
+        status.setMessage("ACCEPTED");
+        status.setCode("001");
+        bookingEntity.setStatus(status);
         final BookingEntity objectSavedAtDB = bookingRepository.save(bookingEntity);
 
         if (objectSavedAtDB == null || objectSavedAtDB.getId() == null) {
@@ -74,16 +79,24 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public int updateBooking(Booking booking) {
-        if (booking == null ||booking.getId() == null ||booking.getGuest() == null) {
+    public int updateBooking(Booking booking,Long id) {
+        if (booking == null ||id == null ||booking.getGuest() == null) {
             throw new InvalidDataException(BOOKING_INFO_IS_REQUIRED);
         }
+        final BookingEntity bookingEntity = bookingMapper.modelToEntity(booking);
+        Optional<BookingEntity> bookingEntityOptional = bookingRepository.findById(id);
 
-        Optional<BookingEntity> bookingEntityOptional = bookingRepository.findById(booking.getId());
-        if (bookingEntityOptional.isPresent()) {
+        if (!bookingEntityOptional.isPresent()) {
             throw new RecordNotFoundException(BOOKING_DOES_NOT_EXIST);
-        } else {
+        }
+
+        bookingEntity.setId(bookingEntityOptional.get().getId());
+        final BookingEntity objectSavedAtDB = bookingRepository.save(bookingEntity);
+
+        if (objectSavedAtDB == null || objectSavedAtDB.getId() == null) {
             return 0;
+        } else {
+            return 1;
         }
     }
 

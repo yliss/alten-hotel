@@ -6,9 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,6 +16,12 @@ import javax.persistence.Table;
 @Table(name = "Guest")
 public class GuestEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "guestIdGenerator")
+    @SequenceGenerator(name = "guestIdGenerator", sequenceName = "guestId",
+            allocationSize = 1,initialValue=1)
+    Long id;
+    @Column
     private String name;
+    @Column
     private String email;
 }

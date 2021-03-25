@@ -10,13 +10,14 @@ import org.mapstruct.Named;
 public interface BookingMapper {
 
     @Mapping(target = "id",  ignore = true)
-    @Mapping(source = "guest", target = "guestId", qualifiedByName = "getGuest")
+
+    @Mapping(source = "guest", target = "guest")
     BookingEntity modelToEntity (Booking booking);
 
-    @Mapping(source = "guestId", target = "guest", qualifiedByName = "createGuestModelObject")
+    @Mapping(source = "guest", target = "guest")
     Booking entityToModel (BookingEntity booking);
 
-    @Named("getGuest")
+  /*  @Named("getGuest")
     static String getGuest(Guest guest) {
         if (guest != null) {
             return guest.getEmail();
@@ -29,10 +30,10 @@ public interface BookingMapper {
         if (guestId != null) {
             Guest guest = new Guest();
             guest.setEmail(guestId);
-
+            guest.setName();
             return guest;
         } else
             return null;
     }
-
+*/
 }
