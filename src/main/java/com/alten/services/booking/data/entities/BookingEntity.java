@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.util.Date;
 import javax.persistence.*;
 
@@ -17,20 +18,21 @@ public class BookingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bookingIdGenerator")
     @SequenceGenerator(name = "bookingIdGenerator", sequenceName = "bookingId",
-            allocationSize = 1,initialValue=1)
-    Long id;
+            allocationSize = 1, initialValue = 1)
+    private Long id;
 
+    @Column(unique = true)
+    private Date checkIn;
+
+    @Column(unique = true)
+    private Date checkOut;
 
     @Column
-    Date checkIn;
+    private String name;
+
     @Column
-    Date checkOut;
+    private String email;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "guestId", referencedColumnName = "id")
-    GuestEntity guest;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "statusId", referencedColumnName = "id")
-    StatusEntity status;
+    @Column
+    private String status;
 }

@@ -14,10 +14,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.alten.services.booking.util.StringMessages.BOOKING_ID_IS_REQUIRED;
 import static com.alten.services.booking.util.StringMessages.CHECKIN_AND_CHECKOUT_DATES_ARE_REQUIRED;
 
 @Controller
@@ -55,7 +58,9 @@ public class BookingController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<RetrieveBookingResponse> retrieveBooking(@PathVariable("id") Long id) {
+    public ResponseEntity<RetrieveBookingResponse> retrieveBooking(@PathVariable("id")
+                                                                   @Valid
+                                                                   @NotNull(message = BOOKING_ID_IS_REQUIRED) Long id) {
         final Booking booking = bookingService.retrieveBooking(id);
 
         RetrieveBookingResponse bookingResponse = new RetrieveBookingResponse();
@@ -82,10 +87,11 @@ public class BookingController {
     }
 
     @PostMapping
-    public ResponseEntity<Message> creatingBooking(@RequestBody
-                                                   @Valid
-                                                   @CheckDates(message = CHECKIN_AND_CHECKOUT_DATES_ARE_REQUIRED)
-                                                           Booking booking) {
+    public ResponseEntity<Message> creatingBooking(
+            @RequestBody
+            @Valid
+            @CheckDates
+                    Booking booking) {
         Message message = new Message();
         HttpStatus status;
 
@@ -111,7 +117,7 @@ public class BookingController {
         Message message = new Message();
         HttpStatus status;
 
-        int theRecordWasCreated = bookingService.updateBooking(booking,id);
+        int theRecordWasCreated = bookingService.updateBooking(booking, id);
         if (theRecordWasCreated > 0) {
             message.setDescription("The booking was created successful");
 
